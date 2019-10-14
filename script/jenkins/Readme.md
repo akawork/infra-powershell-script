@@ -20,10 +20,7 @@
 - **Step 4**: Choose one or multiple option. Example:
   - I want to install tools on agent so I choose 2,4,5 to install Git, AdoptOpenJDK11, Maven.
 ![images](images/install-tools.png)
-  - If you want to install Jenkins you must install OpenJDK11 before install Jenkins.
-  - Jenkins project performs a full test flow with the following JDK/JREs:
-    - OpenJDK JDK / JRE 8 - 64 bits
-    - OpenJDK JDK / JRE 11 - 64 bits
+  - If you want to install Jenkins just choose option 1 to install.
   - ![images](images/install-jenkins.png)
 
 <a id="config"></a>

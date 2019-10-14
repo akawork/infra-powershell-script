@@ -8,9 +8,8 @@
      Write-Host ""
      Write-Host "1: Press '1' to install Jenkins"
      Write-Host "2: Press '2' to install Git"
-     Write-Host "3: Press '3' to install OpenJDK11"
-     Write-Host "4: Press '4' to install AdoptOpenJDK11"
-     Write-Host "5: Press '5' to install Maven"
+     Write-Host "3: Press '3' to install AdoptOpenJDK11"
+     Write-Host "4: Press '4' to install Maven"
      Write-Host "Q: Press 'Q' to quit"
 }
 
@@ -45,32 +44,6 @@ function Log-Message
     )
 
     Write-Output ("{0} - {1}" -f (Get-Time), $LogMessage)
-}
-
-function Install-OpenJDK11
-{
-    Param($url, $currentDir, $unzipFolder, $javaHome)
-    try
-    {
-        Log-Message "--------Start download OpenJDK 11---------" | Yellow
-        if (!(Test-Path $currentDir -PathType Leaf ))
-        {
-            Invoke-WebRequest -Uri $url -OutFile $currentDir
-            Log-Message "- Download success file store at $currentDir" | Green
-        }
-    }
-    catch
-    {
-        Log-Message "[Error] An error occurred while download OpenJDK 11!" | Red
-        throw $_
-        break;
-    }
-    Log-Message "- Unzip from $currentDir to $unzipFolder"
-    Expand-Archive -path $currentDir -destinationpath $unzipFolder -Force
-    Log-Message "- The default OpenJDK 11 will be installed at C:\Program Files\Java" | Green
-    Log-Message "- Setting evironment variable"
-    $envMachine = [Environment]::GetEnvironmentVariable("Path",[System.EnvironmentVariableTarget]::Machine)
-    [Environment]::SetEnvironmentVariable("Path", $envMachine+";$javaHome\bin","Machine")
 }
 
 function Install-Jenkins
@@ -174,12 +147,6 @@ function Install-Maven
     [Environment]::SetEnvironmentVariable("Path", $envMachine+";$unzipDir\apache-maven-$ver\bin","Machine")
 }
 
-#Information for jdk 8 install
-$javaUrl = "https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip"
-$javaInstallUrl = "$PSScriptRoot\openjdk11.zip"
-$javaHome = "C:\Program Files\Java\jdk-11"
-$javaUnzip = "C:\Program Files\Java"
-
 #Information for maven install
 $mavenUrl = "http://mirrors.viethosting.com/apache/maven/maven-3/3.6.2/binaries/apache-maven-3.6.2-bin.zip"
 $mavenInstallUrl = "$PSScriptRoot\maven.zip"
@@ -245,21 +212,6 @@ do
                {
                     try
                     {
-                        Install-OpenJDK11 $javaUrl $javaInstallUrl $javaUnzip $javaHome
-                    }
-                    catch
-                    {
-                        Log-Message "[Error] An error occurred!" | Red
-                        Log-Message $_
-                        Log-Message $_.ScriptStackTrace
-                        break;
-                    }
-                    break;
-               }
-               '4'
-               {
-                    try
-                    {
                         Install-AdoptOpenJDK $adoptUrl $adoptInstallDir $adoptHome
                     }
                     catch
@@ -271,7 +223,7 @@ do
                     }
                     break;
                }
-               '5'
+               '4'
                {
                     try
                     {
